@@ -8,5 +8,9 @@ resource "aws_instance" "bastion-server" {
   key_name                = aws_key_pair.Stack_KP.key_name
   subnet_id = element(aws_subnet.public_subnets.*.id, count.index)
   security_groups         = [aws_security_group.stack-sg.id]
+
+  tags = {
+   Name = "bastion-server"
+ }
 }
     
