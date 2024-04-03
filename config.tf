@@ -23,7 +23,7 @@ data "template_file" "blogbootstap" {
   vars={
     GIT_REPO1=var.GIT_REPO1
     MOUNT_POINT1=var.MOUNT_POINT1
-    efs1= aws_efs_file_system.fool.dns_name
+    efs1= aws_efs_file_system.foo.dns_name
     DB_NAME1= local.creds.DB_NAME1
     DB_USER1=local.creds.DB_USER1
     DB_PASSWORD=local.creds.DB_PASSWORD

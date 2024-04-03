@@ -1,7 +1,7 @@
 
 output "load_balancer_dns_name_for_clixx" {
   description = "The DNS name of the load balancer"
-  value       = aws_lb.test.dns_name
+  value       = aws_lb.lb.dns_name
 }
 
 output "rds_instance_endpoint_forclixx" {
