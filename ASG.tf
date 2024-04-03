@@ -123,7 +123,7 @@ resource "aws_autoscaling_group" "app_asg" {
  }
 
  resource "aws_lb_listener" "example" {
-   load_balancer_arn = aws_lb.test.arn
+   load_balancer_arn = aws_lb.lb.arn
    port              = 80
    protocol          = "HTTP"
 
