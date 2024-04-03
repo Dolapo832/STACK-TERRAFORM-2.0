@@ -67,7 +67,7 @@ resource "aws_route_table" "private_route" {
 
 resource "aws_route_table_association" "public_subnet_asso" {
  count = length(var.public_subnet_cidrs)
- subnet_id      = element(aws_subnet.public_subnets[count.index].id)
+ subnet_id = element(aws_subnet.public_subnets.*.id, count.index)
  route_table_id = aws_route_table.public_route.id
 }
 
@@ -83,7 +83,7 @@ resource "aws_eip" "nat-eip" {
 resource "aws_nat_gateway" "nat-gateway" {
   count = length(var.public_subnet_cidrs)
   allocation_id = aws_eip.nat-eip.id
-  subnet_id      = element(aws_subnet.public_subnets[count.index].id)
+  subnet_id = element(aws_subnet.public_subnets.*.id, count.index)
   tags = {
       Name = "nat-gateway"
       }
