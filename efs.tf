@@ -7,8 +7,10 @@ resource "aws_efs_file_system" "foo" {
 
 
 resource "aws_efs_mount_target" "alpha" {
-  count = length(var.private_subnet_cidrs)
   file_system_id =  aws_efs_file_system.foo.id
-  subnet_id = element(aws_subnet.private_subnets.*.id, count.index)
+  subnet_id = [
+    element(aws_subnet.private_subnets.*.id, 2),
+    element(aws_subnet.private_subnets.*.id, 3)
+  ]
   security_groups = [aws_security_group.db-sg.id]
 }
