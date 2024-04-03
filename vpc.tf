@@ -80,7 +80,6 @@ resource "aws_route_table_association" "private_subnet_asso" {
 
 #Create an EIP for the NAT-gateway 
 resource "aws_eip" "nat-eip" {
-  count = length(var.public_subnet_cidrs)
    tags = {
       Name = "nat-eip"
       }
@@ -89,7 +88,7 @@ resource "aws_eip" "nat-eip" {
 #Create a NAT Gateway
 resource "aws_nat_gateway" "nat-gateway" {
   count = length(var.public_subnet_cidrs)
-  allocation_id = aws_eip.nat-eip.id
+  allocation_id = aws_eip.nat-eip[0].id
   subnet_id =aws_subnet.public_subnets[0].id
   tags = {
       Name = "nat-gateway"
