@@ -22,7 +22,6 @@ resource "aws_lb" "lb" {
 resource "aws_launch_configuration" "stack_pre" {
   name_prefix          = "web-apps"
   depends_on    = [
-    aws_efs_mount_target.alpha,
     aws_db_instance.CLIXX_DB
   ]
   image_id             = data.aws_ami.stack_ami.id
