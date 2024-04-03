@@ -67,12 +67,13 @@ resource "aws_route_table" "private_route" {
 
 resource "aws_route_table_association" "public_subnet_asso" {
  count = length(var.public_subnet_cidrs)
- subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
+ subnet_id      = element(aws_subnet.public_subnets[count.index].id)
  route_table_id = aws_route_table.public_route.id
 }
 
 #Create an EIP for the NAT-gateway 
 resource "aws_eip" "nat-eip" {
+  count = length(var.public_subnet_cidrs)
    tags = {
       Name = "nat-eip"
       }
@@ -80,12 +81,16 @@ resource "aws_eip" "nat-eip" {
 
 #Create a NAT Gateway
 resource "aws_nat_gateway" "nat-gateway" {
+  count = length(var.public_subnet_cidrs)
   allocation_id = aws_eip.nat-eip.id
-  subnet_id      = element(aws_subnet.public_subnets[0].id)
+  subnet_id      = element(aws_subnet.public_subnets[count.index].id)
   tags = {
       Name = "nat-gateway"
       }
 }
+
+
+
 
 resource "aws_route" "nat_gateway_route" {
   route_table_id         =  aws_route_table.private_route.id # Specify the ID of your route table
