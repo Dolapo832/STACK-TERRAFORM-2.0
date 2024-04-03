@@ -27,7 +27,7 @@ resource "aws_launch_configuration" "stack_pre" {
   image_id             = data.aws_ami.stack_ami.id
   instance_type        = var.instance_type
   user_data            = base64encode(data.template_file.bootstrap.rendered)
-  security_groups      = [aws_security_group.db-sg]
+  security_groups      = [aws_security_group.db-sg.id]
 
   lifecycle {
     create_before_destroy = true
