@@ -1,4 +1,5 @@
 resource "aws_instance" "bastion-server" {
+  count = length(var.public_subnet_cidrs)
   ami                     = data.aws_ami.stack_ami.id
   instance_type           = var.instance_type
   vpc_security_group_ids  = [aws_security_group.stack-sg.id]
