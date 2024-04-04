@@ -21,12 +21,13 @@ pipeline {
          }
          stage('terraform plan'){
             steps {
-                // sh "terraform plan --auto-approve"
+                slackSend (color: '#FFFF00', message: "STARTED: Job by ${RUNNER}' ${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 sh "terraform plan -out=tfplan -input=false"
             }
         }
          stage('Final Deployment Approval') {
             steps {
+                slackSend (color: '#FFFF00', message: "STARTED: Job by ${RUNNER}' ${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 script {
                     def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: true, description: 'Apply terraform', name: 'confirm'] ])
                 }
@@ -34,6 +35,7 @@ pipeline {
          }
          stage('Terraform Final Action'){
             steps {
+                slackSend (color: '#FFFF00', message: "STARTED: Job by ${RUNNER}' ${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 script{stage("Performing Terraform ${ACTION}")}
                 sh "terraform ${ACTION} --auto-approve"
                 //  sh "terraform apply  -input=false tfplan"
