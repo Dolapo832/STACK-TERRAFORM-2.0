@@ -6,8 +6,7 @@ pipeline {
     stages{
          stage('terraform init'){
              steps {
-                slackSend (color: '#FFFF00', message: "STARTED: Job 
-             '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                  sh "terraform init"
         }
          }
