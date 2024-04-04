@@ -2,8 +2,7 @@ pipeline {
     agent any
     environment {
         PATH = "${PATH}:${getTerraformPath()}"
-        ACTION = "destroy"
-        RUNNER = "Dolapo"
+        
     }
       stages{
         stage('Initial Deployment Approval') {
