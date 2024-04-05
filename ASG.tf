@@ -13,7 +13,7 @@ resource "aws_lb" "lb" {
     element(aws_subnet.public_subnets.*.id, 0),
     element(aws_subnet.public_subnets.*.id, 1)
   ]
- security_groups         = [aws_security_group.stack-sg.id]
+ security_groups         = [aws_security_group.public-sg.id]
    tags = {
     Name = " Stack-Load-Balancer"
   }
@@ -28,7 +28,7 @@ resource "aws_launch_configuration" "stack_pre" {
   image_id             = data.aws_ami.stack_ami.id
   instance_type        = var.instance_type
   user_data            = base64encode(data.template_file.bootstrap.rendered)
-  security_groups      = [aws_security_group.db-sg.id]
+  security_groups      = [aws_security_group.private-sg.id]
 
   lifecycle {
     create_before_destroy = true

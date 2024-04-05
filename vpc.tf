@@ -27,7 +27,7 @@ resource "aws_subnet" "private_subnets1" {
  count      = length(var.private_subnet_cidrs1)
  vpc_id     = aws_vpc.main.id
  cidr_block = element(var.private_subnet_cidrs1, count.index)
- availability_zone = element(var.azs[0], count.index)
+ availability_zone =var.azs[0]
  tags = {
      Name = "Private-Subnet${count.index + 1}"
   }
@@ -37,7 +37,7 @@ resource "aws_subnet" "private_subnets2" {
  count      = length(var.private_subnet_cidrs2)
  vpc_id     = aws_vpc.main.id
  cidr_block = element(var.private_subnet_cidrs2, count.index)
- availability_zone = element(var.azs[1], count.index)
+ availability_zone = var.azs[1]
  tags = {
      Name = "Private-Subnet${count.index + 1}"
   }
@@ -108,6 +108,7 @@ resource "aws_route_table_association" "private_subnet_asso2" {
 
 #Create an EIP for the NAT-gateway 
 resource "aws_eip" "nat-eip" {
+  count         = length(var.public_subnet_cidrs)
   tags = {
     Name = "nat-eip-${count.index}"
   }
