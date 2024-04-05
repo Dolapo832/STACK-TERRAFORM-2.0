@@ -20,6 +20,27 @@ resource "aws_efs_mount_target" "beta" {
 }
 
 #blog's configuration
+resource "aws_efs_file_system" "fool" {
+  creation_token = "my-blog-efs"
+  tags = {
+    Name = "My-Blog "
+  }
+}
+
+resource "aws_efs_mount_target" "alpha1" {
+  file_system_id =  aws_efs_file_system.fool.id
+  subnet_id      = element(aws_subnet.private_subnets1.*.id, 0)
+  security_groups = [aws_security_group.private-sg.id]
+}
+
+resource "aws_efs_mount_target" "beta1" {
+  file_system_id =  aws_efs_file_system.fool.id
+  subnet_id      = element(aws_subnet.private_subnets2.*.id, 0)
+  security_groups = [aws_security_group.private-sg.id]
+  
+}
+
+
 
 
 
