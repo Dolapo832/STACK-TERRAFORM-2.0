@@ -1,8 +1,8 @@
 resource "aws_db_subnet_group" "db-subnet-group" {
   name       = "db-subnet-group"
  subnet_ids = [
-    element(aws_subnet.private_subnets.*.id, 4),
-    element(aws_subnet.private_subnets.*.id, 5)
+    element(aws_subnet.private_subnets1.*.id, 2),
+    element(aws_subnet.private_subnets2.*.id, 2)
   ]# Specify the private subnet IDs
 }
 resource "aws_db_instance" "CLIXX_DB" {
@@ -13,7 +13,7 @@ resource "aws_db_instance" "CLIXX_DB" {
   password               = "W3lcome123"
   snapshot_identifier    = data.aws_db_snapshot.CLIXXSNAP.id
   skip_final_snapshot    = true
-  vpc_security_group_ids = ["${aws_security_group.db-sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.private-sg.id}"]
   db_subnet_group_name  = aws_db_subnet_group.db-subnet-group.name
 
   lifecycle {

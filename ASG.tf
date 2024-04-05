@@ -82,8 +82,8 @@ resource "aws_autoscaling_group" "app_asg" {
   max_size                  = 2
   min_size                  = 2
   vpc_zone_identifier       =  [
-    element(aws_subnet.private_subnets.*.id, 2),
-    element(aws_subnet.private_subnets.*.id, 3)
+    element(aws_subnet.private_subnets1.*.id, 0),
+    element(aws_subnet.private_subnets2.*.id, 0)
   ]
   launch_configuration      = aws_launch_configuration.stack_pre.id
   health_check_type         = "ELB"
@@ -132,3 +132,8 @@ resource "aws_autoscaling_group" "app_asg" {
      target_group_arn = aws_lb_target_group.app_target_group.arn
    }
  }
+
+
+ #blog's deployment
+ 
+

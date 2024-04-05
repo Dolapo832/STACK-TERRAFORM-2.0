@@ -4,14 +4,14 @@ resource "aws_key_pair" "Stack_KP" {
   public_key = file(var.PATH_TO_PUBLIC_KEY)
 }
 
-resource "aws_security_group" "stack-sg" {
+resource "aws_security_group" "public-sg" {
   vpc_id     = aws_vpc.main.id
   name        = "Stack-WebDZ1"
   description = "Stack IT Security Group For my vpc and public subnet"
 }
 
 resource "aws_security_group_rule" "ssh" {
-  security_group_id = aws_security_group.stack-sg.id
+  security_group_id = aws_security_group.public-sg.id
   type              = "ingress"
   protocol          = "tcp"
   from_port         = 22
@@ -20,7 +20,7 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_security_group_rule" "http" {
-  security_group_id = aws_security_group.stack-sg.id
+  security_group_id = aws_security_group.public-sg.id
   type              = "ingress"
   protocol          = "tcp"
   from_port         = 80
@@ -29,7 +29,7 @@ resource "aws_security_group_rule" "http" {
 }
 
 resource "aws_security_group_rule" "https" {
-  security_group_id = aws_security_group.stack-sg.id
+  security_group_id = aws_security_group.public-sg.id
   type              = "ingress"
   protocol          = "tcp"
   from_port         = 443
@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "https" {
 
 
 resource "aws_security_group_rule" "nfs" {
-  security_group_id = aws_security_group.stack-sg.id
+  security_group_id = aws_security_group.public-sg.id
   type              = "ingress"
   protocol          = "tcp"
   from_port         = 2049
@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "nfs" {
 }
 
 resource "aws_security_group_rule" "mysql" {
-  security_group_id = aws_security_group.stack-sg.id
+  security_group_id = aws_security_group.public-sg.id
   type              = "ingress"
   protocol          = "tcp"
   from_port         = 3306
@@ -58,7 +58,7 @@ resource "aws_security_group_rule" "mysql" {
 }
 
 resource "aws_security_group_rule" "Oracle-RDS" {
-  security_group_id = aws_security_group.stack-sg.id
+  security_group_id = aws_security_group.public-sg.id
   type              = "ingress"
   protocol          = "tcp"
   from_port         = 1521
@@ -67,7 +67,7 @@ resource "aws_security_group_rule" "Oracle-RDS" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  security_group_id = aws_security_group.stack-sg.id
+  security_group_id = aws_security_group.public-sg.id
   type              = "egress"
   protocol          = "-1"
   from_port         = 00
@@ -76,7 +76,7 @@ resource "aws_security_group_rule" "egress" {
 }
 
 #security group for the private subnets 
-resource "aws_security_group" "db-sg" {
+resource "aws_security_group" "private-sg" {
   vpc_id     = aws_vpc.main.id
   name   = "db-sg"
 
@@ -84,7 +84,7 @@ resource "aws_security_group" "db-sg" {
     from_port   = 1521
     to_port     = 1521
     protocol    = "tcp" 
-    security_groups = [aws_security_group.stack-sg.id] 
+    security_groups = [aws_security_group.public-sg.id] 
     # Allow traffic from the public subnets
   }
 
@@ -92,21 +92,21 @@ ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    security_groups = [aws_security_group.stack-sg.id] # Allow traffic from the public subnets 
+    security_groups = [aws_security_group.public-sg.id] # Allow traffic from the public subnets 
     
   }
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp" 
-    security_groups = [aws_security_group.stack-sg.id] # Allow traffic from the public subnets
+    security_groups = [aws_security_group.public-sg.id] # Allow traffic from the public subnets
   }
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    security_groups = [aws_security_group.stack-sg.id] # Allow traffic from the public subnets
+    security_groups = [aws_security_group.public-sg.id] # Allow traffic from the public subnets
    
   }
 
@@ -114,7 +114,7 @@ ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    security_groups = [aws_security_group.stack-sg.id] # Allow traffic from the public subnets  
+    security_groups = [aws_security_group.public-sg.id] # Allow traffic from the public subnets  
     
 
   }
@@ -123,7 +123,7 @@ ingress {
     from_port         = -1   # ICMP type (any)
     to_port           = -1   # ICMP code (any)
     protocol          = "icmp" 
-    security_groups = [aws_security_group.stack-sg.id] # Allow traffic from the public subnets
+    security_groups = [aws_security_group.public-sg.id] # Allow traffic from the public subnets
   }
 
   egress {
@@ -134,7 +134,7 @@ ingress {
   }
 
   tags = {
-    Name = "db-sg"
+    Name = "private-sg"
   }
 }
 
