@@ -119,6 +119,15 @@ ingress {
 
   }
 
+   ingress {
+    from_port   = 2049
+    to_port     = 2049
+    protocol    = "tcp"
+    security_groups = [aws_security_group.public-sg.id] # Allow traffic from the public subnets  
+    
+
+  }
+
 ingress {
     from_port         = -1   # ICMP type (any)
     to_port           = -1   # ICMP code (any)
