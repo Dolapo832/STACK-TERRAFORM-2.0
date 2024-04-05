@@ -125,13 +125,13 @@ resource "aws_nat_gateway" "nat-gateway" {
 }
 
 
-resource "aws_route" "nat_gateway_route" {
+resource "aws_route" "nat_gateway_route1" {
   route_table_id         =  aws_route_table.private_route1.id # Specify the ID of your route table
   destination_cidr_block = "0.0.0.0/0"     # Route all internet-bound traffic
   nat_gateway_id         = aws_nat_gateway.nat-gateway[0].id  # Specify the ID of your NAT Gateway
 }
 
-resource "aws_route" "nat_gateway_route" {
+resource "aws_route" "nat_gateway_route2" {
   route_table_id         =  aws_route_table.private_route2.id # Specify the ID of your route table
   destination_cidr_block = "0.0.0.0/0"     # Route all internet-bound traffic
   nat_gateway_id         = aws_nat_gateway.nat-gateway[1].id  # Specify the ID of your NAT Gateway
