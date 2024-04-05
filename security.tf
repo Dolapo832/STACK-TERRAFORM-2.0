@@ -78,7 +78,7 @@ resource "aws_security_group_rule" "egress" {
 #security group for the private subnets 
 resource "aws_security_group" "private-sg" {
   vpc_id     = aws_vpc.main.id
-  name   = "db-sg"
+  name   = "private-sg"
 
   ingress {
     from_port   = 1521

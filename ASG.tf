@@ -141,7 +141,7 @@ resource "aws_autoscaling_group" "app_asg" {
   name               = "test-blog-tf"
   internal           = false
   load_balancer_type = "application"
-  security_groups   = [aws_security_group.stack-sg.id]
+  security_groups   = [aws_security_group.public-sg.id]
  subnets = [
     element(aws_subnet.public_subnets.*.id, 0),
     element(aws_subnet.public_subnets.*.id, 1)
