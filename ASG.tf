@@ -22,7 +22,8 @@ resource "aws_lb" "lb" {
 resource "aws_launch_configuration" "stack_pre" {
   name_prefix          = "web-apps"
   depends_on    = [
-    aws_efs_mount_target.alpha, aws_efs_mount_target.beta,
+    aws_efs_mount_target.alpha, 
+    aws_efs_mount_target.beta,
     aws_db_instance.CLIXX_DB
   ]
   image_id             = data.aws_ami.stack_ami.id
@@ -157,7 +158,11 @@ resource "aws_autoscaling_group" "app_asg" {
 
 resource "aws_launch_configuration" "stack_blog" {
   name_prefix   = "stack_blog"
-  depends_on = [aws_efs_mount_target.alpha1,aws_efs_mount_target.beta1]
+  depends_on = [
+     aws_db_instance.blog_DB,
+    aws_efs_mount_target.alpha1, 
+    aws_efs_mount_target.beta1
+    ]
   image_id      = data.aws_ami.stack_ami.id
   instance_type = var.instance_type
   user_data = base64encode(data.template_file.blogbootstap.rendered)
