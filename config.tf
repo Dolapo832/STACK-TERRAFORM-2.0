@@ -38,5 +38,13 @@ data "aws_db_snapshot" "BLOGSNAP" {
   most_recent            = true
 }
 
+data "template_file" "keybootstrap" {
+  template = file(format("%s/scripts/keybootstrap.tpl", path.module))
+  vars={
+    S3_BUCKET = local.creds.s3_bucket
+    PEM_KEY   = "stack-app.pem"
+  }
+}
+
 
 

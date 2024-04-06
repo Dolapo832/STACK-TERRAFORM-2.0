@@ -28,6 +28,7 @@ resource "aws_launch_configuration" "stack_pre" {
   ]
   image_id             = data.aws_ami.stack_ami.id
   instance_type        = var.instance_type
+  key_name                = "stackdevops"
   user_data            = base64encode(data.template_file.bootstrap.rendered)
   security_groups      = [aws_security_group.private-sg.id]
 
@@ -165,6 +166,7 @@ resource "aws_launch_configuration" "stack_blog" {
     ]
   image_id      = data.aws_ami.stack_ami.id
   instance_type = var.instance_type
+  key_name                = "stackdevops"
   user_data = base64encode(data.template_file.blogbootstap.rendered)
   security_groups      = [aws_security_group.private-sg.id]
 
