@@ -150,7 +150,7 @@ ingress {
 #security group for the rds 
 resource "aws_security_group" "db-sg" {
   vpc_id     = aws_vpc.main.id
-  name   = "private-sg"
+  name   = "dg-sg"
 
   ingress {
     from_port   = 1521
@@ -165,40 +165,21 @@ ingress {
     to_port     = 3306
     protocol    = "tcp"
     security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets 
+}
     
-  }
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp" 
-    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets
-   
-  }
-
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets  
-    
-
   }
 
-   ingress {
+ingress {
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
     security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets  
-    
-
-  }
+ }
 
 ingress {
     from_port         = -1   # ICMP type (any)
@@ -215,7 +196,7 @@ ingress {
   }
 
   tags = {
-    Name = "private-sg"
+    Name = "dg-sg"
   }
 }
 
