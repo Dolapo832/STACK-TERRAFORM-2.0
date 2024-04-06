@@ -19,6 +19,59 @@ chown ec2-user:ec2-user ${MOUNT_POINT1}
 sudo echo ${efs1}:/ ${MOUNT_POINT1} nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,_netdev 0 0 >> /etc/fstab
 mount -a -t nfs4
 
+
+#checking the groups to verify addition of 'apache'
+groups
+
+#blog
+usermod -a -G apache ec2-user
+chown -R ec2-user:apache /var/www
+chmod 2775 /var/www && find /var/www -type d -exec sudo chmod 2775 {} \;
+find /var/www -type f -exec sudo chmod 0664 {} \;
+
+#Install addition PHP stuff and restarting services
+sudo yum install php-mbstring -y
+sudo systemctl restart httpd
+sudo systemctl restart php-fpm
+
+#Installing git
+cd ${MOUNT_POINT1}
+sudo chmod -R 755 ${MOUNT_POINT1}
+sudo yum install git -y
+#sudo mkdir installation
+sudo git clone ${GIT_REPO1}
+cp -rf STACK_BLOG/* ${MOUNT_POINT1}
+
+
+####
+#variable declaration 
+WP_CONFIG=${MOUNT_POINT1}/wp-config.php
+NEW_RDS_INSTANCE=$(echo "${RDS_INSTANCE}" | sed 's/':3306'//g')
+
+#Update wordpress config with db details
+sudo sed -i "s/'database_name_here'/'${DB_NAME1}'/g" $WP_CONFIG
+sudo sed -i "s/'username_here'/'${DB_USER1}'/g" $WP_CONFIG
+sudo sed -i "s/'password_here'/'${DB_PASSWORD}'/g" $WP_CONFIG
+sudo sed -i "s/'rds_instance'/'$${NEW_RDS_INSTANCE}'/g" $WP_CONFIG
+
+#restart apache http server and enable services
+sudo systemctl restart httpd
+sudo systemctl enable httpd && sudo systemctl enable mariadb
+
+#sudo systemctl status of MySQL and apache HTTP server
+sudo systemctl status mariadb
+sudo systemctl status httpd
+
+# update option value with dns name
+mysql -h "$${NEW_RDS_INSTANCE}" -u "${DB_USER1}" -p"${DB_PASSWORD}" "${DB_NAME1}" <<EOF
+UPDATE wp_options SET option_value ="${Blog_LB}" WHERE option_name= 'siteurl';
+UPDATE wp_options SET option_value = "${Blog_LB}" WHERE option_name= 'home';
+EOF
+
+sudo sed -i '151s/None/All/' /etc/httpd/conf/httpd.conf
+
+# sleep 10 
+
 EBS_DEVICES="/dev/sdb /dev/sdc /dev/sdd /dev/sde /dev/sdg"
 #Partitioning Disks
 for device in $${EBS_DEVICES}; do
@@ -76,55 +129,4 @@ for i in "$${!volume[@]}"; do
 done
 echo "Mount points created and Disks successfully mounted!"
 
-#checking the groups to verify addition of 'apache'
-groups
-
-#blog
-usermod -a -G apache ec2-user
-chown -R ec2-user:apache /var/www
-chmod 2775 /var/www && find /var/www -type d -exec sudo chmod 2775 {} \;
-find /var/www -type f -exec sudo chmod 0664 {} \;
-
-#Install addition PHP stuff and restarting services
-sudo yum install php-mbstring -y
-sudo systemctl restart httpd
-sudo systemctl restart php-fpm
-
-#Installing git
-cd ${MOUNT_POINT1}
-sudo chmod -R 755 ${MOUNT_POINT1}
-sudo yum install git -y
-#sudo mkdir installation
-sudo git clone ${GIT_REPO1}
-cp -rf STACK_BLOG/* ${MOUNT_POINT1}
-
-
-####
-#variable declaration 
-WP_CONFIG=${MOUNT_POINT1}/wp-config.php
-NEW_RDS_INSTANCE=$(echo "${RDS_INSTANCE}" | sed 's/':3306'//g')
-
-#Update wordpress config with db details
-sudo sed -i "s/'database_name_here'/'${DB_NAME1}'/g" $WP_CONFIG
-sudo sed -i "s/'username_here'/'${DB_USER1}'/g" $WP_CONFIG
-sudo sed -i "s/'password_here'/'${DB_PASSWORD}'/g" $WP_CONFIG
-sudo sed -i "s/'rds_instance'/'$${NEW_RDS_INSTANCE}'/g" $WP_CONFIG
-
-#restart apache http server and enable services
-sudo systemctl restart httpd
-sudo systemctl enable httpd && sudo systemctl enable mariadb
-
-#sudo systemctl status of MySQL and apache HTTP server
-sudo systemctl status mariadb
-sudo systemctl status httpd
-
-# update option value with dns name
-mysql -h "$${NEW_RDS_INSTANCE}" -u "${DB_USER1}" -p"${DB_PASSWORD}" "${DB_NAME1}" <<EOF
-UPDATE wp_options SET option_value ="${Blog_LB}" WHERE option_name= 'siteurl';
-UPDATE wp_options SET option_value = "${Blog_LB}" WHERE option_name= 'home';
-EOF
-
-sudo sed -i '151s/None/All/' /etc/httpd/conf/httpd.conf
-
-# sleep 10 
 

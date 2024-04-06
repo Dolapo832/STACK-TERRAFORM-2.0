@@ -15,7 +15,7 @@ resource "aws_db_instance" "CLIXX_DB" {
   password               = "W3lcome123"
   snapshot_identifier    = data.aws_db_snapshot.CLIXXSNAP.id
   skip_final_snapshot    = true
-  vpc_security_group_ids = ["${aws_security_group.private-sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.db-sg.id}"]
   db_subnet_group_name  = aws_db_subnet_group.db-subnet-group.name
 
   lifecycle {
@@ -32,7 +32,7 @@ resource "aws_db_instance" "blog_DB" {
   password               = "stackinc"
   snapshot_identifier    = data.aws_db_snapshot.BLOGSNAP.id
   skip_final_snapshot    = true
-  vpc_security_group_ids = ["${aws_security_group.private-sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.db-sg.id}"]
   db_subnet_group_name  = aws_db_subnet_group.db-subnet-group.name
 
   lifecycle {
