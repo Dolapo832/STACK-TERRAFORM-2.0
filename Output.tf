@@ -20,6 +20,14 @@ output "rds_instance_endpoint_for_myblog" {
   value       = aws_db_instance.blog_DB.endpoint
 }
 
+output "hosted_zone_id_for_clixx" {
+  value = aws_route53_zone.clixx.zone_id
+}
+
+output "hosted_zone_id_for_blog" {
+  value = aws_route53_zone.blog.zone_id
+}
+
 
 
 

@@ -140,13 +140,13 @@ resource "aws_route53_zone" "clixx" {
 }
 
 resource "aws_route53_record" "clixxrecord" {
-  zone_id = aws_lb.lb.zone_id
+  zone_id = aws_route53_zone.clixx.zone_id
   name    = "dev.clixx.stack-dolapo.com"
   type    = "A"
 
   alias {
     name                   = aws_lb.lb.dns_name
-    zone_id                = aws_lb.lb.dns_name.zone_id
+    zone_id                = aws_lb.lb.zone_id
     evaluate_target_health = true
   }
 }
@@ -296,13 +296,13 @@ resource "aws_autoscaling_group" "app_blog" {
 }
 
 resource "aws_route53_record" "blogrecord" {
-  zone_id = aws_lb.test1.zone_id
+  zone_id = aws_route53_zone.blog.zone_id
   name    = "dev.blog.stack-dolapo.com"
   type    = "A"
 
   alias {
     name                   = aws_lb.test1.dns_name
-    zone_id                = aws_lb.test1.dns_name.zone_id
+    zone_id                = aws_lb.test1.zone_id
     evaluate_target_health = true
   }
 }
