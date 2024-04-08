@@ -1,6 +1,5 @@
 
-
-output "dns_name_for clixx" {
+output "dns_name_for_clixx" {
   value = aws_route53_record.clixxrecord.name
   description = "The DNS name of the Route 53 A record"
 }
