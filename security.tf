@@ -157,35 +157,36 @@ resource "aws_security_group" "db-sg" {
     to_port     = 1521
     protocol    = "tcp" 
     security_groups = [aws_security_group.private-sg.id] 
-    # Allow traffic from the public subnets
+   # Allow traffic from the private subnets
   }
 
 ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets 
+    security_groups = [aws_security_group.private-sg.id]
+     # Allow traffic from the private subnets
 }
     
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets  
+    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the private subnets 
   }
 
 ingress {
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
-    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets  
+    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the private subnets  
  }
 
 ingress {
     from_port         = -1   # ICMP type (any)
     to_port           = -1   # ICMP code (any)
     protocol          = "icmp" 
-    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the public subnets
+    security_groups = [aws_security_group.private-sg.id] # Allow traffic from the private subnets
   }
 
   egress {
@@ -199,6 +200,8 @@ ingress {
     Name = "dg-sg"
   }
 }
+
+
 
 
 

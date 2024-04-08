@@ -1,7 +1,7 @@
 resource "aws_efs_file_system" "foo" {
   creation_token = "my-efs"
   tags = {
-    Name = "MyProduct"
+    Name = "clixx-efs"
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_efs_mount_target" "beta" {
 resource "aws_efs_file_system" "fool" {
   creation_token = "my-blog-efs"
   tags = {
-    Name = "My-Blog "
+    Name = "Blog-efs"
   }
 }
 

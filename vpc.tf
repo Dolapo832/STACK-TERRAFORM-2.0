@@ -139,5 +139,4 @@ resource "aws_route" "nat_gateway_route2" {
 }
 
 
-#creating a private route table
 

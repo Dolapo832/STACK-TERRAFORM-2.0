@@ -1,7 +1,8 @@
 
-output "load_balancer_dns_name_for_clixx" {
-  description = "The DNS name of the load balancer"
-  value       = aws_lb.lb.dns_name
+
+output "dns_name_for clixx" {
+  value = aws_route53_record.clixxrecord.name
+  description = "The DNS name of the Route 53 A record"
 }
 
 output "rds_instance_endpoint_forclixx" {
@@ -9,10 +10,11 @@ output "rds_instance_endpoint_forclixx" {
   value       = aws_db_instance.CLIXX_DB.endpoint
 }
 
-output "load_balancer_dns_name_for_myblog" {
-  description = "The DNS name of the load balancer"
-  value       = aws_lb.test1.dns_name
+output "dns_name_for_myblog" {
+  value = aws_route53_record.blogrecord.name
+  description = "The DNS name of the Route 53 A record"
 }
+
 
 output "rds_instance_endpoint_for_myblog" {
   description = "The connection endpoint for the RDS instance"

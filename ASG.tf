@@ -28,7 +28,7 @@ resource "aws_launch_configuration" "stack_pre" {
   ]
   image_id             = data.aws_ami.stack_ami.id
   instance_type        = var.instance_type
-  key_name                ="stack-app"
+  key_name             = "stack-app"
   user_data            = base64encode(data.template_file.bootstrap.rendered)
   security_groups      = [aws_security_group.private-sg.id]
 
@@ -134,6 +134,23 @@ resource "aws_autoscaling_group" "app_asg" {
      target_group_arn = aws_lb_target_group.app_target_group.arn
    }
  }
+
+resource "aws_route53_zone" "clixx" {
+  name = "clixx.stack-dolapo.com"
+}
+
+resource "aws_route53_record" "clixxrecord" {
+  zone_id = aws_route53_zone.clixx.zone_id
+  name    = "dev.clixx.stack-dolapo.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.lb.dns_name
+    zone_id                = aws_lb.lb.dns_name.zone_id
+    evaluate_target_health = true
+  }
+}
+
 
 
  #blog's deployment
@@ -273,6 +290,23 @@ resource "aws_autoscaling_group" "app_blog" {
      target_group_arn = aws_lb_target_group.app_target_blog.arn
    }
  }
+
+ resource "aws_route53_zone" "blog" {
+  name = "blog.stack-dolapo.com"
+}
+
+resource "aws_route53_record" "blogrecord" {
+  zone_id = aws_route53_zone.blog.zone_id
+  name    = "dev.blog.stack-dolapo.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.test1.dns_name
+    zone_id                = aws_lb.test1.dns_name.zone_id
+    evaluate_target_health = true
+  }
+}
+
 
  
 
