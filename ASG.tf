@@ -38,41 +38,41 @@ resource "aws_launch_configuration" "stack_pre" {
 
   root_block_device {
     volume_type           = "gp2"
-    volume_size           = 20
+    volume_size           = 30
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sdb"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sdc"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sdd"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sde"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sdf"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
@@ -177,7 +177,7 @@ resource "aws_route53_record" "clixxrecord" {
 resource "aws_launch_configuration" "stack_blog" {
   name_prefix   = "stack_blog"
   depends_on = [
-     aws_db_instance.blog_DB,
+    aws_db_instance.blog_DB,
     aws_efs_mount_target.alpha1, 
     aws_efs_mount_target.beta1
     ]
@@ -193,41 +193,41 @@ resource "aws_launch_configuration" "stack_blog" {
 
   root_block_device {
     volume_type           = "gp2"
-    volume_size           = 20
+    volume_size           = 30
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sdb"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sdc"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sdd"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sde"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
 
   ebs_block_device {
     device_name           = "/dev/sdg"
-    volume_size           = 20
+    volume_size           = 30
     volume_type           = "gp2"
     delete_on_termination = true
   }
