@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "Clixx_task" {
  container_definitions = jsonencode([
    {
      name      = "Clixx-Container"
-     image: "${data.aws_ecr_repository.ecr_repository.repository_url}:latest"
+     image = "${data.aws_ecr_repository.ecr_repository.repository_url}:latest"
      cpu       = 256
      memory    = 512
      essential = true
