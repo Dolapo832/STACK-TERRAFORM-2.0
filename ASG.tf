@@ -6,7 +6,7 @@ locals {
 
 resource "aws_lb" "lb" {
   #depends_on = [aws_efs_mount_target.efs_mount2]
-  name               = "LoadBalancer"
+  name               = "ecs-alb"
   internal           = false
   load_balancer_type = "application"
   subnets = [
@@ -14,9 +14,9 @@ resource "aws_lb" "lb" {
     element(aws_subnet.public_subnets.*.id, 1)
   ]
  security_groups         = [aws_security_group.public-sg.id]
-   tags = {
-    Name = " Stack-Load-Balancer"
-  }
+tags = {
+   Name = "ecs-alb"
+ }
 }
 
 resource "aws_launch_configuration" "stack_pre" {
@@ -78,30 +78,31 @@ resource "aws_launch_configuration" "stack_pre" {
   }
 }
 
-# resource "aws_autoscaling_group" "app_asg" {
-#   name                      = "app_asg"
-#   desired_capacity          = 2
-#   max_size                  = 2
-#   min_size                  = 2
-#   vpc_zone_identifier       =  [
-#     element(aws_subnet.private_subnets1.*.id, 0),
-#     element(aws_subnet.private_subnets2.*.id, 0)
-#   ]
-#   launch_configuration      = aws_launch_configuration.stack_pre.id
-#   health_check_type         = "ELB"
-#   health_check_grace_period = 300
-#   target_group_arns         = [aws_lb_target_group.app_target_group.arn]
+resource "aws_autoscaling_group" "app_asg" {
+  name                      = "app_asg"
+  desired_capacity          = 2
+  max_size                  = 4
+  min_size                  = 2
+  vpc_zone_identifier       =  [
+    element(aws_subnet.private_subnets1.*.id, 0),
+    element(aws_subnet.private_subnets2.*.id, 0)
+  ]
+  launch_configuration      = aws_launch_configuration.stack_pre.id
+  # health_check_type         = "ELB"
+  # health_check_grace_period = 300
+  # target_group_arns         = [aws_lb_target_group.app_target_group.arn]
 
-#   tag {
-#     key                 = "Name"
-#     value               = "app-instance"
-#     propagate_at_launch = true
-#   }
+tag {
+   key                 = "AmazonECSManaged"
+   value               = true
+   propagate_at_launch = true
+ }
 
-#   timeouts {
-#     delete = "15m"
-#   }
-# }
+  timeouts {
+    delete = "20m"
+  }
+}
+
 
 # Create a target group
  resource "aws_lb_target_group" "app_target_group" {
@@ -110,18 +111,9 @@ resource "aws_launch_configuration" "stack_pre" {
    protocol = "HTTP"
    vpc_id = aws_vpc.main.id
        # Specify your VPC ID here
-            
-  
-
-    health_check {
-    path                = "/"
-     protocol            = "HTTP"
-     port                = 80
-     healthy_threshold   = 2
-     unhealthy_threshold = 2
-     timeout             = 3
-     interval            = 30
-   }
+   health_check {
+   path = "/"
+ }       
  }
 
  resource "aws_lb_listener" "example" {
