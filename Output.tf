@@ -28,6 +28,11 @@ output "hosted_zone_id_for_blog" {
   value = aws_route53_zone.blog.zone_id
 }
 
+## Accessing the Repository URL ##
+output "ecr_repository_url" {
+  value = data.aws_ecr_repository.ecr_repository.repository_url
+}
+
 
 
 
