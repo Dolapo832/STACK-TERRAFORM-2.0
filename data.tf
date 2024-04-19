@@ -13,15 +13,15 @@ data "aws_secretsmanager_secret_version" "creds" {
   secret_id = "creds"
  }
 
-data "aws_iam_policy_document" "assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
-    }
-  }
-}
+# data "aws_iam_policy_document" "assume_role_policy" {
+#   statement {
+#     actions = ["sts:AssumeRole"]
+#     principals {
+#       type        = "Service"
+#       identifiers = ["ecs-tasks.amazonaws.com"]
+#     }
+#   }
+# }
 
 data "aws_ecr_repository" "ecr_repository" {
   name = "clixx-repository"
