@@ -45,21 +45,28 @@ variable "public_subnet_cidrs" {
     ]
 }
 
-variable "private_subnet_cidrs" {
+variable "private_subnet_cidrs1" {
   type = list(string)
-  description = "Private Subnet CIDR values"
+  description = "Private Subnet CIDR for Az1 values"
   default = [ 
     "10.0.0.0/24",
-    "10.0.1.0/24",
     "10.0.8.0/22",
-    "10.0.12.0/22",
     "10.0.16.0/24",
-    "10.0.17.0/24",
     "10.0.18.0/26",
-    "10.0.19.0/26",
-    "10.0.20.0/26",
-    "10.0.21.0/26"
+    "10.0.20.0/26"
     ]
+}
+
+variable "private_subnet_cidrs2" {
+  type = list(string)
+  description = "Private Subnet CIDR for Az2 values"
+  default = [
+    "10.0.1.0/24",
+    "10.0.12.0/22",
+    "10.0.17.0/24",
+    "10.0.19.0/26",
+    "10.0.21.0/26"
+  ]
 }
 
 
@@ -87,18 +94,6 @@ variable "azs" {
   ]
 }
 
-variable "subnet_count" {
-  type = map(number)
-  default = {
-    "public_subnets"  = 2,
-    "private_subnets" = 10
-  }
-}
-
-variable "subnet_count_per_az" {
-  type    = number
-  default = 5 // Number of private subnets per availability zone
-}
 
 
 
