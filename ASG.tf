@@ -110,7 +110,7 @@ tag {
    port     = 80
    protocol = "TCP"
    vpc_id = aws_vpc.main.id
-   target_type = "ip"
+   target_type = "instance"
        # Specify your VPC ID here
    health_check {
    path = "/"
