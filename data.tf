@@ -25,5 +25,7 @@ data "aws_secretsmanager_secret_version" "creds" {
 
 data "aws_ecr_repository" "ecr_repository" {
   name = "clixx-repository"
+  registry_id="381492048000"
+
 }
 

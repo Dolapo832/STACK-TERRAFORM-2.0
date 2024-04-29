@@ -11,7 +11,31 @@ systemctl enable httpd
 systemctl is-enabled httpd
 
 #command to create an environment variable in “/etc/ecs/ecs.config” file on each EC2 instance that will be created. Without setting this, the ECS service will not be able to deploy and run containers on our EC2 instance.
-echo ECS_CLUSTER=my-ecs-cluster >> /etc/ecs/ecs.config
+touch /home/ec2-user/config_out.txt
+yum install -y aws-cli
+
+#associating the EC2 instances with the cluster
+echo '#!/usr/bin/env bash' > /home/ec2-user/ecs_config.sh
+echo 'sleep 120' >> /home/ec2-user/ecs_config.sh
+echo 'echo ECS_CLUSTER=clixx-cluster-TF >> /etc/ecs/ecs.config' >> /home/ec2-user/ecs_config.sh
+chmod 744 /home/ec2-user/ecs_config.sh
+
+sh /home/ec2-user/ecs_config.sh 1>/home/ec2-user/config_out.txt 2>/home/ec2-user/config_out.txt & disown
+
+sudo yum update -y
+
+sudo yum install mysql -y
+
+#Installing Docker
+
+sudo amazon-linux-extras install docker -y
+
+#Starting Docker 
+sudo systemctl start docker
+
+sleep 100
+
+sudo yum update -y ecs-init
 
 
 #EFS MOUNT
