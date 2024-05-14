@@ -29,16 +29,22 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole2_attachment" {
 ### Creating the Task Definition ###
 resource "aws_ecs_task_definition" "Clixx_task" {
   family             = "Clixx-task"
-  network_mode       = "awsvpc"
   execution_role_arn = aws_iam_role.ecsTaskExecutionRole2.arn
   task_role_arn      = aws_iam_role.ecsTaskExecutionRole2.arn
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7c69851b2f576aac1adcf34c0fd9d3f431aea93d
   container_definitions = jsonencode([
     {
       name      = "Clixx-Container"
       image     = "${data.aws_ecr_repository.ecr_repository.repository_url}:latest"
+<<<<<<< HEAD
       memory    = 1024
+=======
+      memory    = 512
+>>>>>>> 7c69851b2f576aac1adcf34c0fd9d3f431aea93d
       essential = true
       portMappings = [
         {
@@ -57,6 +63,7 @@ resource "aws_ecs_service" "ecs_service" {
   cluster         = aws_ecs_cluster.Stack_cluster_Clixx.id
   task_definition = aws_ecs_task_definition.Clixx_task.arn
   desired_count   = 2
+<<<<<<< HEAD
   launch_type = "EC2"
   force_new_deployment = true
   deployment_circuit_breaker { 
@@ -71,11 +78,27 @@ resource "aws_ecs_service" "ecs_service" {
   #   security_groups  = [aws_security_group.ecs-sg.id]
   #   assign_public_ip = false
   # }
+=======
+
+  #network_configuration {
+   # subnets          = [
+    #  element(aws_subnet.private_subnets1.*.id, 0),
+     # element(aws_subnet.private_subnets2.*.id, 0)
+    #]
+    #security_groups  = [aws_security_group.ecs-sg.id]
+    #assign_public_ip = false
+  #}
+>>>>>>> 7c69851b2f576aac1adcf34c0fd9d3f431aea93d
 
   load_balancer {
     target_group_arn = aws_lb_target_group.app_target_group.arn
     container_name   = "Clixx-Container"
     container_port   = 80
+  }
+  
+  deployment_circuit_breaker {
+    enable = false
+    rollback = false 
   }
 
   depends_on = [aws_autoscaling_group.app_asg]
