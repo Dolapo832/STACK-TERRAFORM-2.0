@@ -32,18 +32,12 @@ resource "aws_ecs_task_definition" "Clixx_task" {
   execution_role_arn = aws_iam_role.ecsTaskExecutionRole2.arn
   task_role_arn      = aws_iam_role.ecsTaskExecutionRole2.arn
 
-  cpu               = 256
-  memory            = 512
-
-=======
->>>>>>> 7c69851b2f576aac1adcf34c0fd9d3f431aea93d
   container_definitions = jsonencode([
     {
       name      = "Clixx-Container"
       image     = "${data.aws_ecr_repository.ecr_repository.repository_url}:latest"
-      cpu       = 256
-      memory    = 512
->>>>>>> 7c69851b2f576aac1adcf34c0fd9d3f431aea93d
+      memory    = 1024
+
       essential = true
       portMappings = [
         {
@@ -62,7 +56,7 @@ resource "aws_ecs_service" "ecs_service" {
   cluster         = aws_ecs_cluster.Stack_cluster_Clixx.id
   task_definition = aws_ecs_task_definition.Clixx_task.arn
   desired_count   = 2
-
+  
   network_configuration {
     subnets          = [
       element(aws_subnet.private_subnets1.*.id, 0),

@@ -120,7 +120,7 @@ tag {
    health_check {
    path = "/"
  }       
->>>>>>> 7c69851b2f576aac1adcf34c0fd9d3f431aea93d
+
  }
 
  resource "aws_lb_listener" "example" {
