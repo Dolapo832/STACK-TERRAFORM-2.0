@@ -31,7 +31,6 @@ resource "aws_ecs_task_definition" "Clixx_task" {
   family             = "Clixx-task"
   execution_role_arn = aws_iam_role.ecsTaskExecutionRole2.arn
   task_role_arn      = aws_iam_role.ecsTaskExecutionRole2.arn
-  network_mode = "awsvpc"
   container_definitions = jsonencode([
     {
       name      = "Clixx-Container"
@@ -53,7 +52,7 @@ resource "aws_ecs_task_definition" "Clixx_task" {
 ## Creating the Service Under Task Definition ##
 resource "aws_ecs_service" "ecs_service" {
   name            = "stack-Clixx-services"
-  cluster         = aws_ecs_cluster.Stack_cluster_Clixx.id
+  cluster         = aws_ecs_cluster.Stack_cluster_Clixx.name
   task_definition = aws_ecs_task_definition.Clixx_task.arn
   desired_count   = 2
   launch_type = "EC2"
