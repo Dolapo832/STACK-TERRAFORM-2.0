@@ -46,5 +46,19 @@ data "template_file" "keybootstrap" {
   }
 }
 
+data "template_file" "ecsbootstrap" {
+  template = file(format("%s/scripts/ecsbootstrap.tpl", path.module))
+  vars={
+    MOUNT_POINT=var.MOUNT_POINT
+    EFS_DNS= aws_efs_file_system.foo.dns_name
+    DB_USER = local.creds.DB_USER
+    DB_PASS = local.creds.DB_PASS
+    DB_NAME =local.creds.DB_NAME
+    DB_HOST=aws_db_instance.CLIXX_DB.endpoint
+    LB_DNS= aws_lb.lb.dns_name
+   
+  }
+}
+
 
 

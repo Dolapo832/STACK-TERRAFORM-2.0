@@ -26,10 +26,10 @@ resource "aws_launch_configuration" "stack_pre" {
     aws_efs_mount_target.beta,
     aws_db_instance.CLIXX_DB
   ]
-  image_id             = data.aws_ami.stack_ami.id
+  image_id             = "ami-021fe45d6043e82c8"
   instance_type        = var.instance_type
   key_name             = "stack-app"
-  user_data            = base64encode(data.template_file.bootstrap.rendered)
+  user_data            = base64encode(data.template_file.ecsbootstrap.rendered)
   security_groups      = [aws_security_group.private-sg.id]
 
   lifecycle {
@@ -101,6 +101,11 @@ tag {
   timeouts {
     delete = "20m"
   }
+tag {
+   key                 = "ECS-CLUSTER"
+   value               = aws_ecs_cluster.Stack_cluster_Clixx.name
+   propagate_at_launch = true
+}
 }
 
 
@@ -110,11 +115,8 @@ tag {
    port     = 80
    protocol = "HTTP"
    vpc_id = aws_vpc.main.id
-   target_type = "ip"
-       # Specify your VPC ID here
-   health_check {
-   path = "/"
- }       
+   target_type = "instance"
+       # Specify your VPC ID here       
  }
 
  resource "aws_lb_listener" "example" {

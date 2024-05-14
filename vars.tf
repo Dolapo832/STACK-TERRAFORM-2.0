@@ -12,7 +12,7 @@ variable "subsystem" {
 }
 
 variable "instance_type" {
-  default = "t2.micro"
+  default = "t2.medium"
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
