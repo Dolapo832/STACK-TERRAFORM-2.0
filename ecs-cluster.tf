@@ -37,7 +37,7 @@ resource "aws_ecs_task_definition" "Clixx_task" {
       name      = "Clixx-Container"
       image     = "${data.aws_ecr_repository.ecr_repository.repository_url}:latest"
       memory    = 1024
-
+      network_mode = "awsvpc"
       essential = true
       portMappings = [
         {
