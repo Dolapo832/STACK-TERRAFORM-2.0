@@ -8,7 +8,7 @@ resource "aws_lb" "lb" {
   #depends_on = [aws_efs_mount_target.efs_mount2]
   name               = "ecs-alb"
   internal           = false
-  load_balancer_type = "network"
+  load_balancer_type = "application"
   subnets = [
     element(aws_subnet.public_subnets.*.id, 0),
     element(aws_subnet.public_subnets.*.id, 1)
@@ -113,20 +113,20 @@ tag {
  resource "aws_lb_target_group" "app_target_group" {
    name     = "app-target-group"
    port     = 80
-   protocol = "TCP"
+   protocol = "HTTP"
    vpc_id = aws_vpc.main.id
-   target_type = "ip"
+   target_type = "instance"
        # Specify your VPC ID here
-   health_check {
-   path = "/"
- }       
+#    health_check {
+#    path = "/"
+#  }       
 
  }
 
  resource "aws_lb_listener" "example" {
    load_balancer_arn = aws_lb.lb.arn
    port              = 80
-   protocol          = "TCP"
+   protocol          = "HTTP"
 
    default_action {
      type             = "forward"
