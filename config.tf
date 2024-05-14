@@ -39,7 +39,7 @@ data "aws_db_snapshot" "BLOGSNAP" {
 }
 
 data "template_file" "keybootstrap" {
-  template = file(format("%s/scripts/keybootstrap.tpl", path.module))
+  template = file(format("%s/scripts/ebsbootstrap.tpl", path.module))
   vars={
     S3_BUCKET = local.creds.s3_bucket
     PEM_KEY   = "stack-app.pem"
